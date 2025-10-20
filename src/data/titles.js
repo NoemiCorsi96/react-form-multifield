@@ -11,7 +11,7 @@ const titles = [
         autore: "Luca Bianchi",
         contenuto: "Vediamo come creare un server con Express...",
         categoria: "BackEnd",
-        pubblicato: false
+        pubblicato: true
     }
 ];
 export default titles;

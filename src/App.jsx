@@ -4,9 +4,10 @@ const initialFormData = {
   titolo: '',
   autore: '',
   contenuto: '',
-  categoria: 'FrontEnd'
+  categoria: 'FrontEnd',
+  pubblicato: false
 }
-const initialTasks = []
+
 
 /*Milestone 1
 Creare una pagina che visualizzi una lista di articoli, mostrandone solo il titolo.
@@ -105,27 +106,41 @@ function App() {
             <option value="BackEnd">BackEnd</option>
             <option value="UI/UX">UI/UX</option>
           </select>
+          <div className='form-check mb-3'>
+            <label className='form-check-label' >
+              <input
+                className='form-check-input'
+                type='checkbox'
+                name='pubblicato'
+                id='pubblicato'
+                checked={formData.pubblicato}
+                onChange={handleChange}
+              />
 
+              Pubblicato
+            </label>
+          </div>
           <button className='btn btn-primary' type="submit">Aggiungi Articolo</button>
         </form>
 
         <ul className='list-group'>
-          {articles.map((articolo, i) =>
-            <li className='list-group-item d-flex justify-content-between mt-2 mb-2' key={i}>
-              <div>
-                <h5 className='mb-1'>{articolo.titolo}</h5>
-                {articolo.autore && <small className='text-muted'>Autore: {articolo.autore}</small>}
-                {articolo.contenuto && <p className='mb-1 mt-2'>{articolo.contenuto}</p>}
-                <span className='badge bg-secondary'>{articolo.categoria}</span>
+          {articles.filter(articolo => articolo.pubblicato)
+            .map((articolo, i) =>
+              <li className='list-group-item d-flex justify-content-between mt-2 mb-2' key={i}>
+                <div>
+                  <h5 className='mb-1'>{articolo.titolo}</h5>
+                  {articolo.autore && <small className='text-muted'>Autore: {articolo.autore}</small>}
+                  {articolo.contenuto && <p className='mb-1 mt-2'>{articolo.contenuto}</p>}
+                  <span className='badge bg-secondary'>{articolo.categoria}</span>
 
-              </div>
+                </div>
 
 
-              <button className='btn btn-danger' onClick={() => handleTrash(i)}>
-                <i className='bi bi-trash'></i>
-              </button>
-            </li>
-          )}
+                <button className='btn btn-danger' onClick={() => handleTrash(i)}>
+                  <i className='bi bi-trash'></i>
+                </button>
+              </li>
+            )}
 
         </ul>
       </div>
