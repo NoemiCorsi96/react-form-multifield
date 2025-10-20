@@ -6,11 +6,15 @@ Creare una pagina che visualizzi una lista di articoli, mostrandone solo il tito
 Milestone 2
 Aggiungiamo in pagina un semplice form con un campo input in cui inserire il titolo di un 
 nuovo articolo del blog. Al submit del form, mostrare la lista degli articoli aggiornati.
- 
-BONUS
- 
-Aggiungere la possibilità di cancellare ciascun articolo utilizzando un'icona.
-Impostare il lavoro su più componenti. */
+ Aggiungere la possibilità di cancellare ciascun articolo utilizzando un'icona.
+Impostare il lavoro su più componenti.
+Ampliare l'esercizio precedente aggiungendo, nel form, il campo autore, contenuto ed un campo 
+per una categoria a scelta tra: FrontEnd, BackEnd e UI/UX (utilizzando una select)
+
+Aggiornare la visualizzazione della lista degli articoli, 
+mostrando le nuove informazioni inserite.
+BONUS:
+Aggiungere un campo checkbox “Pubblicato” (che indica se l’articolo debba essere visibile o meno). */
 
 function App() {
 
@@ -32,7 +36,33 @@ function App() {
     <>
       <div className='container'>
         <form className='mt-3 mb-5' onSubmit={handleSubmit}>
-          <input className='form-control' type="text" placeholder='Inserisci un titolo di un articolo del blog' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
+          <input className='form-control mb-2' type="text" placeholder='Inserisci un titolo di un articolo del blog' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
+
+          {/* AUTORE */}
+          <input
+            className='form-control mb-2'
+            type="text"
+            name="autore"
+            placeholder='Autore'
+          /* value e onChange li aggiungeremo dopo */
+          />
+
+          {/* CONTENUTO */}
+          <textarea
+            className='form-control mb-2'
+            name="contenuto"
+            placeholder='Contenuto'
+            rows={4}
+          /* value e onChange li aggiungeremo dopo */
+          />
+
+          {/* CATEGORIA */}
+          <select className='form-select mb-2' name="categoria" /* value e onChange dopo */>
+            <option value="FrontEnd">FrontEnd</option>
+            <option value="BackEnd">BackEnd</option>
+            <option value="UI/UX">UI/UX</option>
+          </select>
+          <button className='btn btn-primary' type="submit">Aggiungi Articolo</button>
         </form>
 
         <ul>
