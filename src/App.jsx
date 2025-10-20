@@ -1,5 +1,12 @@
 import { useState } from 'react'
 import titles from './data/titles'
+const initialFormData = {
+  titolo: '',
+  autore: '',
+  contenuto: '',
+  categoria: 'FrontEnd'
+}
+const initialTasks = []
 
 /*Milestone 1
 Creare una pagina che visualizzi una lista di articoli, mostrandone solo il titolo.
@@ -17,26 +24,58 @@ BONUS:
 Aggiungere un campo checkbox “Pubblicato” (che indica se l’articolo debba essere visibile o meno). */
 
 function App() {
+  const [formData, setFormData] = useState(initialFormData);
+  const [articles, setArticles] = useState(titles);
 
-  const [newTitle, setNewTitle] = useState('');
-  const [copyTitle, setCopyTitle] = useState(titles);
+
+
+
   function handleSubmit(e) {
-    e.preventDefault();
-    console.log('Cliccare Submit');
-    setCopyTitle([newTitle, ...copyTitle])
-    setNewTitle('')
+    e.preventDefault()
+
+
+    const newArticle = {
+      id: Date.now(),
+      ...formData
+    }
+
+
+
+    setArticles([newArticle, ...articles])
+    setFormData(initialFormData)
+
+  }
+
+  function handleChange(e) {
+
+    let value;
+    if (e.target.type == 'checkbox') {
+      value = e.target.checked
+    } else {
+      value = e.target.value
+    }
+
+
+    setFormData({ ...formData, [e.target.name]: value })
+
 
   }
 
   function handleTrash(i) {
-    const filteredTitle = copyTitle.filter((_, index) => index != i)
-    setCopyTitle(filteredTitle)
+    setArticles((currentArticles) => currentArticles.filter((_, index) => index != i))
   }
+
+
   return (
     <>
       <div className='container'>
         <form className='mt-3 mb-5' onSubmit={handleSubmit}>
-          <input className='form-control mb-2' type="text" placeholder='Inserisci un titolo di un articolo del blog' value={newTitle} onChange={(e) => setNewTitle(e.target.value)} />
+          <input className='form-control mb-2'
+            type="text"
+            name='titolo'
+            placeholder='Inserisci un titolo di un articolo del blog'
+            value={formData.titolo}
+            onChange={handleChange} />
 
           {/* AUTORE */}
           <input
@@ -44,7 +83,9 @@ function App() {
             type="text"
             name="autore"
             placeholder='Autore'
-          /* value e onChange li aggiungeremo dopo */
+            value={formData.autore}
+            onChange={handleChange}
+
           />
 
           {/* CONTENUTO */}
@@ -53,24 +94,32 @@ function App() {
             name="contenuto"
             placeholder='Contenuto'
             rows={4}
-          /* value e onChange li aggiungeremo dopo */
+            value={formData.contenuto}
+            onChange={handleChange}
+
           />
 
           {/* CATEGORIA */}
-          <select className='form-select mb-2' name="categoria" /* value e onChange dopo */>
+          <select className='form-select mb-2' name="categoria" value={formData.categoria} onChange={handleChange} >
             <option value="FrontEnd">FrontEnd</option>
             <option value="BackEnd">BackEnd</option>
             <option value="UI/UX">UI/UX</option>
           </select>
+
           <button className='btn btn-primary' type="submit">Aggiungi Articolo</button>
         </form>
 
-        <ul>
-          {copyTitle.map((title, i) =>
+        <ul className='list-group'>
+          {articles.map((articolo, i) =>
             <li className='list-group-item d-flex justify-content-between mt-2 mb-2' key={i}>
-              <span>
-                {title}
-              </span>
+              <div>
+                <h5 className='mb-1'>{articolo.titolo}</h5>
+                {articolo.autore && <small className='text-muted'>Autore: {articolo.autore}</small>}
+                {articolo.contenuto && <p className='mb-1 mt-2'>{articolo.contenuto}</p>}
+                <span className='badge bg-secondary'>{articolo.categoria}</span>
+
+              </div>
+
 
               <button className='btn btn-danger' onClick={() => handleTrash(i)}>
                 <i className='bi bi-trash'></i>
